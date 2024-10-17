@@ -1,19 +1,17 @@
-// Your client ID and API key from the Google Cloud Console
-const CLIENT_ID = 'YOUR_CLIENT_ID';
-const API_KEY = 'YOUR_API_KEY';
+// Your client ID from the Google Cloud Console
+const CLIENT_ID = '295905583318-voe2d1asjii4f5mb7uogn4dtc1cq9n90.apps.googleusercontent.com';
+const API_KEY = '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';
 
-// Discovery doc URL for APIs used by the quickstart
-const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
+// Array of API discovery doc URLs for APIs used by the quickstart
+const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"];
 
-// Authorization scopes required by the API; multiple scopes can be
-// included, separated by spaces.
+// Authorization scopes required by the API
 const SCOPES = 'https://www.googleapis.com/auth/drive.file';
 
 let tokenClient;
 let gapiInited = false;
 let gisInited = false;
 
-document.getElementById('authorize_button').style.visibility = 'hidden';
 document.getElementById('uploadForm').style.display = 'none';
 
 function gapiLoaded() {
@@ -23,7 +21,7 @@ function gapiLoaded() {
 async function initializeGapiClient() {
     await gapi.client.init({
         apiKey: API_KEY,
-        discoveryDocs: [DISCOVERY_DOC],
+        discoveryDocs: DISCOVERY_DOCS,
     });
     gapiInited = true;
     maybeEnableButtons();
@@ -96,18 +94,16 @@ async function uploadPhoto(file) {
 }
 
 function displayPhoto(fileId) {
+    const img = document.createElement('img');
+    img.src = `https://drive.google.com/uc?export=view&id=${fileId}`;
+    img.alt = 'Event photo';
+    img.className = 'img-fluid';
+
     const col = document.createElement('div');
     col.className = 'col';
     
     const card = document.createElement('div');
     card.className = 'card shadow-sm';
-    
-    const img = document.createElement('img');
-    img.src = `https://drive.google.com/uc?export=view&id=${fileId}`;
-    img.className = 'bd-placeholder-img card-img-top';
-    img.width = '100%';
-    img.height = '225';
-    img.alt = 'Event photo';
     
     card.appendChild(img);
     col.appendChild(card);
@@ -115,6 +111,7 @@ function displayPhoto(fileId) {
     document.getElementById('gallery').appendChild(col);
 }
 
+// Add these functions to your HTML
 window.gapiLoaded = gapiLoaded;
 window.gisLoaded = gisLoaded;
 window.handleAuthClick = handleAuthClick;
